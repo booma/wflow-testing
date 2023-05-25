@@ -1,0 +1,3 @@
+
+forkOnly: true
+closureComment: "Thank you for your interest in the FTC SDK.  Most pull requests landing here are from team forks and are not intended to be merged.  For the rest, due to the nature of the FTC SDK release process, FIRST does not accept pull requests on the FtcRobotController repository.  If you would like a change, please open an issue."
