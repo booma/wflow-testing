@@ -8,7 +8,7 @@ jobs:
       steps:
         # Check out code using git
         - uses: actions/checkout@v2
-        # Install Node 12
+        # Install Node 16
         - uses: actions/setup-node@v1
           with:
             version: 12
