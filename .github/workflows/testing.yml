@@ -11,7 +11,7 @@ jobs:
         # Install Node 16
         - uses: actions/setup-node@v1
           with:
-            version: 12
+            version: 16
         - run: npm install @octokit/action
         # Node.js script can be anywhere. A good convention is to put local GitHub Actions
         # into the `.github/actions` folder
