@@ -1,1 +1,25 @@
 
+name: Schedule
+
+on:
+  schedule:
+    - cron: '*/1 * * * *' # Runs every day at midnight
+
+jobs:
+  schedule:
+    runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Run Probot
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+      env:
+        APP_ID: ${{ secrets.APP_ID }}
+        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      run: |
+        npm ci
+        npm run probot
