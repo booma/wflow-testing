@@ -12,22 +12,18 @@ const creon = require('node-cron');
 const scheduleConfig = require('./config');
 const { getPrivateKey } = require("@probot/get-private-key");
 
-const probot = new Probot({
-  appId: process.env.APP_ID,
-  privateKey: getPrivateKey(),
-});
+async function runProbotApp() {
+  const privateKey = await getPrivateKey();
+  const probot = createProbot({ privateKey });
 
 console.log('probot...', probot);
 const ProbotOctokit = Octokit.defaults({
   authStrategy: createProbotAuth,
 });
 
-
 const processPull = async (pull, octokit, config, log) => {
-
   try {
-  
-
+ 
   if ((scheduleConfig.forkOnly == true) && (pull.head.repo.fork == false)) {
     return;
   }
@@ -127,3 +123,5 @@ module.exports = async (app) => {
     // });
 };
 
+}
+runProbotApp();
