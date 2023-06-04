@@ -30,5 +30,5 @@ jobs:
           fi
 
       - name: Run Probot
-        run: npx probot run ./index.js --private-key = ${{ secrets.PRIVATE_KEY }}
+        run: npx probot run ./index.js
     
