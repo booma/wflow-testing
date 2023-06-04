@@ -17,9 +17,7 @@ const probot = new Probot({
   privateKey: getPrivateKey(),
 });
 
-
- 
- 
+console.log('probot...', probot);
 const ProbotOctokit = Octokit.defaults({
   authStrategy: createProbotAuth,
 });
