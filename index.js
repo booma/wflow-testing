@@ -97,7 +97,7 @@ module.exports = async (app) => {
    */
   const prAutoCloseDays = scheduleConfig.interval;
    app.on(["pull_request.opened", "pull_request.reopened"], async (context) => {
-     creon.schedule(scheduleConfig.schedule, () => {
+     
         const createdAt = new Date(context.payload.pull_request.created_at);
         createdAt.setDate(createdAt.getDate() + prAutoCloseDays);
         const remainingTime = (createdAt - new Date()) / 1000;
@@ -105,7 +105,7 @@ module.exports = async (app) => {
         if(Math.floor(remainingTime) <= 0) {
           return processPull(context.payload.pull_request, octokit, scheduleConfig, app.log);
         }     
-        });
+      
      }); 
 
     //  app.on('schedule.repository', async (context) => {
