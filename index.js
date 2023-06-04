@@ -10,9 +10,15 @@ const { config, composeConfigGet } = require("@probot/octokit-plugin-config");
 const { Probot } = require('probot');
 const creon = require('node-cron');
 const scheduleConfig = require('./config');
+const { getPrivateKey } = require("@probot/get-private-key");
+
+const probot = new Probot({
+  appId: process.env.APP_ID,
+  privateKey: getPrivateKey(),
+});
 
 
-console.log(scheduleConfig);
+ 
  
 const ProbotOctokit = Octokit.defaults({
   authStrategy: createProbotAuth,
