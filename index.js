@@ -7,43 +7,39 @@ const { Octokit } = require("@octokit/core");
 const { createProbotAuth } = require("octokit-auth-probot");
 const { createAppAuth } = require("@octokit/auth-app");
 const { config, composeConfigGet } = require("@probot/octokit-plugin-config");
-const { Probot, createProbot } = require('probot');
+const { Probot } = require('probot');
 const creon = require('node-cron');
 const scheduleConfig = require('./config');
 const { getPrivateKey } = require("@probot/get-private-key");
- 
- 
-
 const ProbotOctokit = Octokit.defaults({
   authStrategy: createProbotAuth,
 });
 
 const processPull = async (pull, octokit, config, log) => {
   try {
- 
-  if ((scheduleConfig.forkOnly == true) && (pull.head.repo.fork == false)) {
-    return;
+    if ((scheduleConfig.forkOnly == true) && (pull.head.repo.fork == false)) {
+      return;
+    }
+
+    await octokit.issues.createComment({
+      owner: pull.base.repo.owner.login,
+      repo: pull.base.repo.name,
+      issue_number: pull.number,
+      body: config.closureComment,
+    });
+
+
+    return await octokit.pulls.update({
+      owner: pull.base.repo.owner.login,
+      repo: pull.base.repo.name,
+      pull_number: pull.number,
+      state: "closed"
+    });
   }
-
-  await octokit.issues.createComment({
-    owner: pull.base.repo.owner.login,
-    repo: pull.base.repo.name,
-     issue_number: pull.number,
-    body: config.closureComment,
-   });
-
-
-  return await octokit.pulls.update({
-    owner: pull.base.repo.owner.login,
-    repo: pull.base.repo.name,
-    pull_number: pull.number,
-    state: "closed"
-  });
-}
-catch(error){
-  console.log('loggind details ............')
-  console.log(error);
-}
+  catch(error){
+    console.log('loggind details ............')
+    console.log(error);
+  }
 }
 
 const processRepository = async (repository, octokit, config, log) => {
@@ -94,28 +90,13 @@ module.exports = async (app) => {
    */
   const prAutoCloseDays = scheduleConfig.interval;
    app.on(["pull_request.opened", "pull_request.reopened"], async (context) => {
-     
         const createdAt = new Date(context.payload.pull_request.created_at);
         createdAt.setDate(createdAt.getDate() + prAutoCloseDays);
         const remainingTime = (createdAt - new Date()) / 1000;
          
         if(Math.floor(remainingTime) <= 0) {
           return processPull(context.payload.pull_request, octokit, scheduleConfig, app.log);
-        }     
-      
+        }      
      }); 
 
-    //  app.on('schedule.repository', async (context) => {
-
-    //   console.log('inside scheuld repo event .....');
-    //   const stalePRs = await context.github.pulls.list(context.repo({ state: 'open' }));
-    //   const staleThreshold = new Date();
-    //   staleThreshold.setDate(staleThreshold.getDate() - 30); // 30 days threshold
-  
-    //   const promises = stalePRs.data
-    //     .filter((pr) => new Date(pr.updated_at) < staleThreshold)
-    //     .map((pr) => context.github.pulls.update(context.repo({ pull_number: pr.number, state: 'closed' })));
-  
-    //   await Promise.all(promises);
-    // });
-};
+   
