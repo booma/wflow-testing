@@ -31,5 +31,5 @@ jobs:
 
       - name: Run Probot
         env:
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          PRIVATE_KEY: ${{ env.PRIVATE_KEY }}
           run: npx probot run ./index.js
