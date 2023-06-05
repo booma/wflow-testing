@@ -13,7 +13,14 @@ const scheduleConfig = require('./config');
  const { getPrivateKey } = require("@probot/get-private-key");
 const ProbotOctokit = Octokit.defaults({
   authStrategy: createProbotAuth,
+ auth: {
+        appId: process.env.APP_ID || 0,
+        privateKey: process.env.PRIVATE_KEY || ''  
+       }
 });
+
+
+
 
 const privateKey = getPrivateKey();
 console.log(privateKey);
