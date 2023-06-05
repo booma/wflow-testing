@@ -23,7 +23,6 @@ const probot = createProbot({
  privateKey: fs.readFileSync(privateKeyPath, 'utf8'),
 });
  
-probot.start();
 
 const ProbotOctokit = Octokit.defaults({
   authStrategy: createProbotAuth,
