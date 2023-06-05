@@ -11,26 +11,9 @@ const { Probot } = require('probot');
 const creon = require('node-cron');
 const scheduleConfig = require('./config');
  const { getPrivateKey } = require("@probot/get-private-key");
-/* const ProbotOctokit = Octokit.defaults({
+ 
+const ProbotOctokit = Octokit.defaults({
   authStrategy: createProbotAuth,
-
-}); */
-
-
-const ProbotOctokit = Octokit.defaults((options = {}) => {
-  const defaults = {
-    authStrategy: createAppAuth,
-    auth: {
-      id: process.env.APP_ID,
-      privateKey: process.env.PRIVATE_KEY
-    }
-    };
-
-  if (options.auth) {
-    defaults.auth.installationId = options.auth.installationId;
-  }
-
-  return defaults;
 });
 
 const processPull = async (pull, octokit, config, log) => {
