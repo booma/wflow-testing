@@ -17,6 +17,13 @@ const ProbotOctokit = Octokit.defaults({
 
 const privateKey = getPrivateKey();
 console.log(privateKey);
+
+const probot = new Probot({
+    appId: 183,
+    privateKey: String(privateKey)
+  });
+
+
 const processPull = async (pull, octokit, config, log) => {
   try {
  
