@@ -10,8 +10,21 @@ const { config, composeConfigGet } = require("@probot/octokit-plugin-config");
 const { Probot } = require('probot');
 const creon = require('node-cron');
 const scheduleConfig = require('./config');
- const { getPrivateKey } = require("@probot/get-private-key");
+const { getPrivateKey } = require("@probot/get-private-key");
+const fs = require('fs');
+
+const privateKeyPath = 'privae.key.pem';
+const privateKey = process.env.PRIVATE_KEY;
+
+fs.writeFileSync(privateKeyPath, privateKey);
+
+const probot = createProbot({
+  appId: process.env.APP_ID,
+ privateKey: fs.readFileSync(privateKeyPath, 'utf8'),
+});
  
+probot.start();
+
 const ProbotOctokit = Octokit.defaults({
   authStrategy: createProbotAuth,
 });
